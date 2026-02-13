@@ -1,14 +1,29 @@
-asgiref==3.9.1
+# Core Django
 Django==4.2.24
-django-ckeditor==6.7.3
-django-cors-headers==4.7.0
-django-js-asset==2.2.0
-pillow==11.3.0
-psycopg2
-python-dotenv==1.1.1
+asgiref==3.9.1
 sqlparse==0.5.3
 typing_extensions==4.15.0
 tzdata==2025.2
+
+# Admin & Rich Text
+django-ckeditor==6.7.3
+
+# CORS & JS
+django-cors-headers==4.7.0
+django-js-asset==2.2.0
+
+# Storage & Static
 whitenoise==6.9.0
-django-storages
-supabase
+django-storages==1.14.4
+
+# Image handling
+Pillow==11.3.0
+
+# Database
+psycopg2-binary==2.9.11
+
+# Environment variables
+python-dotenv==1.1.1
+
+# Supabase client
+supabase==2.4.0
