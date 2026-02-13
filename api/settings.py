@@ -55,7 +55,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    # 'api.middleware.VercelSpeedInsightsMiddleware',
 ]
 
 ROOT_URLCONF = 'api.urls'
