@@ -5,6 +5,9 @@ sqlparse==0.5.3
 typing_extensions==4.15.0
 tzdata==2025.2
 
+# Build Support for Python Packages
+wheel
+
 # Admin & Rich Text
 django-ckeditor==6.7.3
 
@@ -20,7 +23,7 @@ django-storages==1.14.4
 Pillow==11.3.0
 
 # Database
-psycopg2-binary==2.9.11
+psycopg2-binary==2.9.10
 
 # Environment variables
 python-dotenv==1.1.1

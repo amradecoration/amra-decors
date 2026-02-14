@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import dj_database_url
 
 from pathlib import Path
 
@@ -93,6 +94,7 @@ POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASS = os.getenv("POSTGRES_PASS")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 POSTGRES_READY = (
     POSTGRES_NAME is not None
@@ -103,21 +105,23 @@ POSTGRES_READY = (
 )
 
 print("POSTGRES_READY", POSTGRES_READY)
+print("DATABASE_URL", DATABASE_URL)
 
 if POSTGRES_READY:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": POSTGRES_NAME,
-            "USER": POSTGRES_USER,
-            "PASSWORD": POSTGRES_PASS,
-            "HOST": POSTGRES_HOST,
-            "PORT": POSTGRES_PORT,
-            "CONN_MAX_AGE": None,  # Set to None for infinity
-            "OPTIONS": {},
-            "ATOMIC_REQUESTS": True,
-        }
-    }
+    # DATABASES = {
+    #     "default": {
+    #         "ENGINE": "django.db.backends.postgresql",
+    #         "NAME": POSTGRES_NAME,
+    #         "USER": POSTGRES_USER,
+    #         "PASSWORD": POSTGRES_PASS,
+    #         "HOST": POSTGRES_HOST,
+    #         "PORT": POSTGRES_PORT,
+    #         "CONN_MAX_AGE": None,  # Set to None for infinity
+    #         "OPTIONS": {},
+    #         "ATOMIC_REQUESTS": True,
+    #     }
+    # }
+    DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
 
 
 # Password validation
