@@ -96,10 +96,12 @@ print("POSTGRES_READY", POSTGRES_READY)
 print("DATABASE_URL", DATABASE_URL)
 
 if POSTGRES_READY:
+    # DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
     DATABASES = {
         "default": dj_database_url.config(
-            DATABASE_URL,
-            conn_max_age=60,  # keep connections alive 60 seconds
+            default=DATABASE_URL,   # fallback if DATABASE_URL is None
+            conn_max_age=60,
+            # conn_health_checks=True,
             ssl_require=True
         )
     }
