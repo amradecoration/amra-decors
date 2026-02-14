@@ -89,39 +89,20 @@ DATABASES = {
     }
 }
 
-POSTGRES_NAME = os.getenv("POSTGRES_NAME")
-POSTGRES_USER = os.getenv("POSTGRES_USER")
-POSTGRES_PASS = os.getenv("POSTGRES_PASS")
-POSTGRES_HOST = os.getenv("POSTGRES_HOST")
-POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 DATABASE_URL = os.getenv("DATABASE_URL")
-
-POSTGRES_READY = (
-    POSTGRES_NAME is not None
-    and POSTGRES_PASS is not None
-    and POSTGRES_USER is not None
-    and POSTGRES_HOST is not None
-    and POSTGRES_PORT is not None
-)
+POSTGRES_READY = DATABASE_URL is not None
 
 print("POSTGRES_READY", POSTGRES_READY)
 print("DATABASE_URL", DATABASE_URL)
 
 if POSTGRES_READY:
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.postgresql",
-    #         "NAME": POSTGRES_NAME,
-    #         "USER": POSTGRES_USER,
-    #         "PASSWORD": POSTGRES_PASS,
-    #         "HOST": POSTGRES_HOST,
-    #         "PORT": POSTGRES_PORT,
-    #         "CONN_MAX_AGE": None,  # Set to None for infinity
-    #         "OPTIONS": {},
-    #         "ATOMIC_REQUESTS": True,
-    #     }
-    # }
-    DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
+    DATABASES = {
+        "default": dj_database_url.config(
+            DATABASE_URL,
+            conn_max_age=60,  # keep connections alive 60 seconds
+            ssl_require=True
+        )
+    }
 
 
 # Password validation
