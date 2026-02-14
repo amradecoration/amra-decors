@@ -27,3 +27,9 @@ python-dotenv==1.1.1
 
 # Supabase client
 supabase==2.4.0
+
+# Production WSGI server
+gunicorn
+
+# Database URL parser
+dj-database-url==1.1.0
