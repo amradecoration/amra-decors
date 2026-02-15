@@ -18,21 +18,15 @@ django-js-asset==2.2.0
 # Storage & Static
 whitenoise==6.9.0
 django-storages==1.14.4
+boto3
 
 # Image handling
 Pillow==11.3.0
 
 # Database
 psycopg2-binary==2.9.10
+dj-database-url==1.1.0
 
 # Environment variables
 python-dotenv==1.1.1
 
-# Supabase client
-supabase==2.4.0
-
-# Production WSGI server
-gunicorn
-
-# Database URL parser
-dj-database-url==1.1.0
