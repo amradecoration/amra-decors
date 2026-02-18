@@ -91,7 +91,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     role = models.ForeignKey(Roles, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
-    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    profile_image = models.FileField(upload_to='profile_images/', blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=10, choices=GENDER, blank=True, null=True)
     address_line1 = models.CharField(max_length=255, blank=True, null=True)
@@ -120,7 +120,7 @@ class Products(models.Model):
     description = RichTextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    image = models.ImageField(upload_to='products/', blank=True, null=True)
+    image = models.FileField(upload_to='products/', blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
@@ -183,7 +183,7 @@ class Slide(models.Model):
     button_text = models.CharField(max_length=255, blank=True, null=True)
     link = models.CharField(max_length=255, blank=True, null=True)
     order = models.PositiveIntegerField(default=0)  # To order the slides
-    image = models.ImageField(upload_to=get_unique_filename, blank=True, null=True, validators=[validate_image_size])  # Image field
+    image = models.FileField(upload_to=get_unique_filename, blank=True, null=True, validators=[validate_image_size])  # Image field
     video = models.FileField(upload_to=get_unique_filename, blank=True, null=True, validators=[validate_video_size]) # Video field
     created_at = models.DateTimeField(auto_now_add=True)
 

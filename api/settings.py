@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'store',
 
+    'storages',
     'ckeditor',
     'corsheaders',
 ]
@@ -92,11 +93,11 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASE_URL = str(os.environ.get('DATABASE_URL'))
 
 if not DATABASE_URL:
-    raise Exception("DATABASE_URL not set")
+    raise Exception('DATABASE_URL not set')
 
 DATABASES = {
-    "default": dj_database_url.config(
-        DATABASE_URL,
+    'default': dj_database_url.config(
+        default=DATABASE_URL,
         # conn_max_age=0,
         conn_max_age=60,  # keep connections alive 60 seconds
         ssl_require=True
@@ -149,29 +150,28 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
-# CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "https://amra-decors.vercel.app",
-    "https://amradecoration.com",
-    "https://amra-decors-seven.vercel.app",
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DEFAULT_FILE_STORAGE = 'api.utils.SupabaseStorage'
 
-AWS_ACCESS_KEY_ID = os.environ.get("SUPABASE_ACCESS_KEY")
-AWS_SECRET_ACCESS_KEY = os.environ.get("SUPABASE_SECRET_KEY")
-AWS_STORAGE_BUCKET_NAME = os.environ.get("SUPABASE_BUCKET")
-AWS_S3_ENDPOINT_URL = os.environ.get("SUPABASE_ENDPOINT")
-AWS_S3_REGION_NAME = "ap-northeast-2"
+AWS_ACCESS_KEY_ID = os.environ.get('SUPABASE_S3_STORAGE_KEY')
+AWS_SECRET_ACCESS_KEY = os.environ.get('SUPABASE_S3_STORAGE_SECRET')
 
-AWS_QUERYSTRING_AUTH = False
-AWS_DEFAULT_ACL = "public-read"
-AWS_S3_FILE_OVERWRITE = False
+AWS_STORAGE_BUCKET_NAME = os.environ.get('SUPABASE_S3_STORAGE_BUCKET')
+AWS_S3_REGION_NAME = os.environ.get('SUPABASE_S3_STORAGE_REGION')
+
+SUPABASE_PROJECT_ID = os.environ.get('SUPABASE_PROJECT_ID')
+
+# Supabase S3 endpoint example
+AWS_S3_ENDPOINT_URL = os.environ.get('SUPABASE_S3_STORAGE_URL')
+AWS_S3_ADDRESSING_STYLE = 'path'  # equivalent to forcePathStyle: true
+
+AWS_QUERYSTRING_AUTH = False  # optional (public files)
+AWS_DEFAULT_ACL = None
