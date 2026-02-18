@@ -29,56 +29,55 @@ class ProfileAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
 
     fieldsets = (
-        (None, {
-            'fields': ('user', 'role', 'phone_number', 'profile_image')
-        }),
-        ('Personal Info', {
-            'fields': ('date_of_birth', 'gender')
-        }),
-        ('Address', {
-            'fields': ('address_line1', 'address_line2', 'city', 'state', 'postal_code', 'country')
-        }),
-        ('Verification', {
-            'fields': ('email_verified', 'phone_verified')
-        }),
-        ('Timestamps', {
-            'fields': ('created_at', 'updated_at')
-        }),
+        (None, {'fields': ('user', 'role', 'phone_number', 'profile_image')}),
+        ('Personal Info', {'fields': ('date_of_birth', 'gender')}),
+        ('Address', {'fields': ('address_line1', 'address_line2', 'city', 'state', 'postal_code', 'country')}),
+        ('Verification', {'fields': ('email_verified', 'phone_verified')}),
+        ('Timestamps', {'fields': ('created_at', 'updated_at')}),
     )
 
 def get_category_choices(categories, level=0):
+    """
+    Recursively generates (id, name) choices for categories with indentation.
+    Uses prefetch_related to minimize queries.
+    """
     choices = []
     indent = "— " * level
     for category in categories:
         choices.append((category.id, f"{indent}{category.name}"))
-        children = category.children.all()
-        if children.exists():
+        # children are already prefetched in queryset
+        children = getattr(category, 'children_prefetch', category.children.all())
+        if children:
             choices += get_category_choices(children, level + 1)
     return choices
 
 class CategoryMultipleChoiceField(forms.ModelMultipleChoiceField):
+    """
+    Lazy ManyToMany field for categories — avoids DB query on import.
+    """
     def __init__(self, *args, **kwargs):
-        # Flat queryset for validation — all categories
-        queryset = kwargs.pop('queryset', Categories.objects.all())
-        
-        # Choices with indentation — only top-level parents to start recursion
-        choices = get_category_choices(Categories.objects.filter(parent__isnull=True))
-        
-        super().__init__(queryset=queryset, *args, **kwargs)
-        self.choices = choices
+        kwargs.setdefault("queryset", Categories.objects.none())
+        super().__init__(*args, **kwargs)
 
 class ProductAdminForm(forms.ModelForm):
     categories = CategoryMultipleChoiceField(
-        queryset=Categories.objects.all(),
-        widget=forms.SelectMultiple(attrs={
-            'size': '15',
-            'style': 'width: 775px;'  # increase width here
-        })
+        widget=forms.SelectMultiple(attrs={'size': '15', 'style': 'width: 775px;'})
     )
 
     class Meta:
         model = Products
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Prefetch categories for choices
+        top_categories = Categories.objects.filter(parent__isnull=True).prefetch_related('children')
+        for cat in top_categories:
+            # attach prefetched children for recursion
+            cat.children_prefetch = list(cat.children.all())
+        self.fields["categories"].queryset = Categories.objects.all()
+        self.fields["categories"].choices = get_category_choices(top_categories)
 
 class ProductsAdmin(admin.ModelAdmin):
     form = ProductAdminForm
@@ -89,10 +88,15 @@ class ProductsAdmin(admin.ModelAdmin):
     # filter_horizontal = ('categories',)  # makes multi-select nicer in admin
 
     readonly_fields = ('created_at', 'updated_at')
-    
+
+    def get_queryset(self, request):
+        # Prefetch categories to avoid N+1 queries in get_categories
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('categories')
+
     def get_categories(self, obj):
         return ", ".join(category.name for category in obj.categories.all())
-    get_categories.short_description = 'Categories'  # This sets the column header
+    get_categories.short_description = 'Categories'
 
 class SlideInline(admin.TabularInline):
     model = Slide
@@ -115,24 +119,14 @@ class SlideAdmin(admin.ModelAdmin):
 
         if obj:
             if obj.slide_type == 'default':
-                return (
-                    (None, {'fields': common_fields + (
-                        'subtitle', 'description', 'button_text', 'link', 'image'
-                    )}),
-                )
+                return ((None, {'fields': common_fields + ('subtitle','description','button_text','link','image')}),)
             elif obj.slide_type == 'image':
-                return (
-                    (None, {'fields': common_fields + ('image', 'link')}),
-                )
+                return ((None, {'fields': common_fields + ('image','link')}),)
             elif obj.slide_type == 'video':
-                return (
-                    (None, {'fields': common_fields + ('video',)}),
-                )
+                return ((None, {'fields': common_fields + ('video',)}),)
 
         # Fallback during creation
-        return (
-            (None, {'fields': ('slide_type', 'title', 'order')}),
-        )
+        return ((None, {'fields': common_fields}),)
 
     def get_form(self, request, obj=None, **kwargs):
         """
