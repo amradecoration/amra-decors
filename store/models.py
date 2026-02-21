@@ -155,7 +155,7 @@ class Banner(models.Model):
 
 class Slide(models.Model):
     TYPES = [
-        ('default', 'Default'),
+        # ('default', 'Default'),
         ('image', 'Image'),
         ('video', 'Video'),
     ]
@@ -176,7 +176,7 @@ class Slide(models.Model):
             raise ValidationError(f"Maximum file size is {max_size_mb}MB")
     
     banner = models.ForeignKey(Banner, related_name='slides', on_delete=models.CASCADE)
-    slide_type = models.CharField(max_length=255, choices=TYPES, default="default")
+    slide_type = models.CharField(max_length=255, choices=TYPES, default="image")
     title = models.CharField(max_length=255, blank=True, null=True)
     subtitle = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
