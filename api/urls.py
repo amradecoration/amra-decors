@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 from store.views import *
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', home_view, name='home'),
     path('login/', login_view, name='login'),
     path('about/', about_view, name='about'),
@@ -33,7 +34,6 @@ urlpatterns = [
     path('product-detail/', product_detail_view, name='product-detail'),
     path('product-detail/<int:id>', product_detail_view, name='product-detail'),
     path('contact/', contact_view, name='contact'),
-    path('admin', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'store.views.custom_404_view'
