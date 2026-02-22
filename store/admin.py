@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import Categories, Coupons, Roles, Profile, Products, Slide, Banner
+from .models import *
 
 # -----------------------------
 # Categories Admin
@@ -155,6 +155,10 @@ class SlideAdmin(admin.ModelAdmin):
             obj.banner_id = 1
         super().save_model(request, obj, form, change)
 
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ('name', 'profession', 'created_at')
+    search_fields = ('name',)
+
 # -----------------------------
 # Register Admins
 # -----------------------------
@@ -165,3 +169,4 @@ admin.site.register(Categories, CategoriesAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Products, ProductsAdmin)
 admin.site.register(Slide, SlideAdmin)
+admin.site.register(Testimonial, TestimonialAdmin)

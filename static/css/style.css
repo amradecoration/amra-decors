@@ -3972,7 +3972,7 @@ img {vertical-align: middle;}
   width: 80px;
 }
 .testimonial-card.style-three .client-quote-wrap {
-  width: calc(100% - 100px);
+  /* width: calc(100% - 100px); */
   margin-left: auto;
 }
 .testimonial-card.style-three .client-quote-wrap .rating {

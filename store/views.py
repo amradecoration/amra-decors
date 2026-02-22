@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 
 # Create your views here.
-from .models import Categories, Coupons, Roles, Profile, Products, Banner
+from .models import *
 
 def get_active_categories():
     return Categories.objects.filter(active=True)
@@ -14,6 +14,7 @@ def home_view(request):
         Prefetch('products', queryset=all_products, to_attr='ordered_products')
     )
     banner = Banner.objects.first()
+    testimonials = Testimonial.objects.first()
 
     page_data = {
         'page_name': 'home',
@@ -21,6 +22,7 @@ def home_view(request):
         'categories': categories,
         'all_products': all_products,
         'banner': banner,
+        'testimonials': testimonials,
     }
 
     return render(request, 'home.html', page_data)

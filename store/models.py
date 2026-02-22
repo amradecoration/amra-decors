@@ -193,3 +193,16 @@ class Slide(models.Model):
 
     def __str__(self):
         return self.title or "Slide #{}".format(self.id)
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    profession = models.CharField(max_length=255, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Testimonials'
+        ordering = ['created_at']
+
+    def __str__(self):
+        return self.name or "Testimonial #{}".format(self.id)

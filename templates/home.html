@@ -180,6 +180,7 @@
             {% endfor %}
             <!-- Product Section End -->
 
+            {% if testimonials %}
             <!-- Testimonial Section Start -->
             <div class="testimonial-area style-three bg-black ptb-120">
                 <div class="container style-one">
@@ -189,7 +190,7 @@
                                 <h2 class="section-title style-one fw-normal text-white mb-15 pe-xxl-5">Genuine Feedback From Clients</h2>
                                 <p class="text-offwhite mb-40 pe-xl-5">From charming keepsakes and handcrafted items to playful novelties
                                 and seasonal surprises each piece is chosen with care to bring</p>
-                                <div class="btn-wrap d-flex flex-wrap">
+                                <!-- <div class="btn-wrap d-flex flex-wrap">
                                     <div class="client-lists-wrap d-flex flex-wrap align-items-center ms-1 mb-lg-10">
                                         <ul class="client-list list-unstyled mb-0">
                                             <li class="rounded-circle"><img src="{% static 'img/clients/client-3.jpg' %}" alt="Image" class="rounded-circle"></li>
@@ -200,18 +201,17 @@
                                             <span class="d-block text-white mt-1">8k+ clients reviews</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                            </div>
                         </div>
                         <div class="col-xl-7 col-lg-7">
                             <div class="testimonial-slider-three swiper position-relative">
                                 <div class="swiper-wrapper">
+                                    {% for testimonial in testimonials %}
                                     <div class="swiper-slide">
                                         <div class="testimonial-card style-three bg-white d-flex flex-wrap round-20">
-                                            <div class="client-img round-15">
-                                                <img src="{% static 'img/clients/client-1.jpg' %}" alt="Image" class="round-15">
-                                            </div>
                                             <div class="client-quote-wrap">
+                                                <p class="fs-xxl-18">"{{ testimonial.content }}”</p>
                                                 <ul class="rating list-unstyled lh-1">
                                                     <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
                                                     <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
@@ -219,65 +219,17 @@
                                                     <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
                                                     <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
                                                 </ul>
-                                                <p class="fs-xxl-18">"I absolutely love this gift shop! Every time I walk in I discover something new and special. Whether I'm shopping for birthdays, holidays, or just a little they always have the perfect item. The quality is fantastic, the prices are reasonable and the staff is so friendly and helpful.”</p>
                                                 <div class="client-info-wrap d-flex flex-wrap align-items-center justify-content-between pe-xxl-4">
                                                     <div class="client-info">
-                                                        <h5 class="fs-22 mb-6">Robert Barnes</h5>
-                                                        <span>Businessman</span>
+                                                        <h5 class="fs-22 mb-6">{{ testimonial.name }}</h5>
+                                                        <span>{{ testimonial.profession }}</span>
                                                     </div>
                                                     <img src="{% static 'img/icons/quote-line-2.svg' %}" alt="Icon">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="swiper-slide">
-                                        <div class="testimonial-card style-three bg-white d-flex flex-wrap round-20">
-                                            <div class="client-img round-15">
-                                                <img src="{% static 'img/clients/client-2.jpg' %}" alt="Image" class="round-15">
-                                            </div>
-                                            <div class="client-quote-wrap">
-                                                <ul class="rating list-unstyled lh-1">
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                </ul>
-                                                <p class="fs-xxl-18">"From the moment I walked in I could tell this ice cream shop was special. The interior is cozy and fun the staff is welcoming and the aroma of freshly made waffle cones is heavenly I had their Hot Fudge Sundae and it was perfection warm rich.”</p>
-                                                <div class="client-info-wrap d-flex flex-wrap align-items-center justify-content-between pe-xxl-4">
-                                                    <div class="client-info">
-                                                        <h5 class="fs-22 mb-6">Bruce Wilson</h5>
-                                                        <span>Enterprenuer</span>
-                                                    </div>
-                                                    <img src="{% static 'img/icons/quote-line-2.svg' %}" alt="Icon">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="testimonial-card style-three bg-white d-flex flex-wrap round-20">
-                                            <div class="client-img round-15">
-                                                <img src="{% static 'img/clients/client-3.jpg' %}" alt="Image" class="round-15">
-                                            </div>
-                                            <div class="client-quote-wrap">
-                                                <ul class="rating list-unstyled lh-1">
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                    <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
-                                                </ul>
-                                                <p class="fs-xxl-18">"The interior is cozy and fun the staff is welcoming and the aroma of freshly made waffle cones is heavenly I had their Hot Fudge Sundae and it was perfection warm rich.From the moment I walked in I could tell this ice cream shop was special. ”</p>
-                                                <div class="client-info-wrap d-flex flex-wrap align-items-center justify-content-between pe-xxl-4">
-                                                    <div class="client-info">
-                                                        <h5 class="fs-22 mb-6">Melinda Brown</h5>
-                                                        <span>Co-Founcer, IBAC</span>
-                                                    </div>
-                                                    <img src="{% static 'img/icons/quote-line-2.svg' %}" alt="Icon">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="slider-btn style-two">
                                     <button class="prev-btn testimonial-prev d-flex flex-column align-items-center justify-content-center rounded-circle border-0"><i class="ri-arrow-left-line"></i></button>
@@ -289,4 +241,5 @@
                 </div>
             </div>
             <!-- Testimonial Section End -->
+             {% endif %}
 {% endblock %}

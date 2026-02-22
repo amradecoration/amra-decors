@@ -1311,7 +1311,7 @@
     width: 100px;
   }
   .testimonial-card.style-three .client-quote-wrap {
-    width: calc(100% - 135px);
+    /* width: calc(100% - 135px); */
   }
   .newsletter-box.style-one .shape-one {
     max-width: 208px;
