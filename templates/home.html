@@ -7,7 +7,7 @@
 			<!-- Hero Section Start -->
             <div class="slideshow-container">
                 {% for slide in banner.slides.all %}
-                {% if slide.slide_type == 'image' %}
+                {% if slide.slide_type == 'image' and slide.image %}
                 <div class="single-slide">
                     <div class="image-container">
                         {% if slide.link %}
@@ -19,7 +19,7 @@
                         {% endif %}
                     </div>
                 </div>
-                {% elif slide.slide_type == 'video' %}
+                {% elif slide.slide_type == 'video' and slide.video %}
                 <div class="single-slide">
                     <div class="video-container position-relative w-100" style="padding-top: 56.25%;" data-cue="fadeIn">
                         <video 
