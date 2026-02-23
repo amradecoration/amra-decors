@@ -108,36 +108,9 @@
                                 </div>
                                 <ul class="menu-section p-0 mb-0 lh-1">
                                     {% for category in categories %}
-                                    {% if category.menu and category.parent == None %}
-                                    {% with category_list=category.children.all %}
-                                    <li class="{% if category_list %}menu-item-has-children{% endif %}">
-                                        <a href="{% url 'products' category.slug %}" class="position-relative">{{ category.name }} {% if category_list %}<i class="ri-add-line"></i>{% endif %}</a>
-                                        {% if category_list %}
-                                        <ul class="menu-subs menu-column-1">
-                                            {% for subcategory in category.children.all %}
-                                            {% with sub_list=subcategory.children.all %}
-                                            <li class="{% if sub_list %}menu-item-has-children{% endif %}">
-                                                <a href="{% url 'products' subcategory.slug %}" class="position-relative">{{ subcategory.name }} {% if sub_list %}<i class="ri-add-line"></i>{% endif %}</a>
-                                                {% if sub_list %}
-                                                <ul class="menu-subs menu-column-1">
-                                                    {% for subsubcategory in subcategory.children.all %}
-                                                    {% with sub_sub_list=subsubcategory.children.all %}
-                                                    <li class="{% if sub_sub_list %}menu-item-has-children{% endif %}">
-                                                        <a href="{% url 'products' subsubcategory.slug %}" class="position-relative">{{ subsubcategory.name }} {% if sub_sub_list %}<i class="ri-add-line"></i>{% endif %}</a>
-                                                    </li>
-                                                    {% endwith %}
-                                                    {% endfor %}
-                                                </ul>
-                                                {% endif %}
-                                            </li>
-                                            <!-- <li><a href="{% url 'products' subcategory.slug %}">{{ subcategory.name }}</a></li> -->
-                                            {% endwith %}
-                                            {% endfor %}
-                                        </ul>
+                                        {% if category.menu and category.parent == None %}
+                                            {% include "categories_menu.html" with item=category %}
                                         {% endif %}
-                                    </li>
-                                    {% endwith %}
-                                    {% endif %}
                                     {% endfor %}
                                     <li><a href="{% url 'contact' %}">Contact</a></li>
                                 </ul>

@@ -1,0 +1,15 @@
+<li class="{% if item.children.exists %}menu-item-has-children{% endif %}">
+    <a href="{% url 'products' item.slug %}" class="position-relative">
+        {{ item.name }}
+        {% if item.children.exists %}
+            <i class="ri-add-line"></i>
+        {% endif %}
+    </a>
+    {% if item.children.exists %}
+        <ul class="menu-subs menu-column-1">
+            {% for child in item.children.all %}
+                {% include "categories_menu.html" with item=child %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>
