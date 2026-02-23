@@ -1,15 +1,52 @@
 from django import forms
 from django.contrib import admin
+from django.db.models import Case, When
+
 from .models import *
 
 # -----------------------------
 # Categories Admin
 # -----------------------------
 class CategoriesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'parent', 'active', 'menu', 'created_at')
+    list_display = ('indented_name', 'parent', 'active', 'menu', 'created_at')
     prepopulated_fields = {"slug": ("name",)}
-    list_filter = ('active', 'parent')
+    list_filter = ('active',)
     search_fields = ('name',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Fetch all categories
+        categories = list(qs)
+        # Build a mapping of parent_id -> children
+        children_map = {}
+        for cat in categories:
+            parent_id = cat.parent_id or 0
+            children_map.setdefault(parent_id, []).append(cat)
+
+        # Recursive function to flatten categories in hierarchy
+        def build_order(parent_id=0):
+            ordered = []
+            for cat in children_map.get(parent_id, []):
+                ordered.append(cat)
+                ordered.extend(build_order(cat.id))
+            return ordered
+
+        # Return queryset in hierarchical order
+        ordered_categories = build_order()
+        # Using list for display, so return qs filtered by ids in order
+        ordered_ids = [c.id for c in ordered_categories]
+        preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ordered_ids)])
+        return qs.filter(pk__in=ordered_ids).order_by(preserved_order)
+
+    def indented_name(self, obj):
+        level = 0
+        parent = obj.parent
+        while parent:
+            level += 1
+            parent = parent.parent
+        return f"{'— ' * level}{obj.name}"
+
+    indented_name.short_description = "Name"
 
 # -----------------------------
 # Coupons Admin
