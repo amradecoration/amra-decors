@@ -8,7 +8,7 @@ from .models import *
 # Categories Admin
 # -----------------------------
 class CategoriesAdmin(admin.ModelAdmin):
-    list_display = ('indented_name', 'parent', 'active', 'menu', 'created_at')
+    list_display = ('indented_name', 'active', 'menu', 'created_at')
     prepopulated_fields = {"slug": ("name",)}
     list_filter = ('active',)
     search_fields = ('name',)
