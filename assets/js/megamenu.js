@@ -9,14 +9,22 @@ if (menu) { // Check if the menu exists
     let previousMenu = []; // Stack to keep track of menu navigation
 
     menuSection.addEventListener('click', (e) => {
-        if (!menu.classList.contains('active')) {
-            return;
+        if (!menu.classList.contains('active')) return;
+
+        // Determine the clicked menu item
+        const menuItem = e.target.closest('.menu-item-has-children');
+        if (!menuItem) return; // Click outside a parent item, ignore
+
+        // Detect which element specifically was clicked
+        const clickedIcon = e.target.tagName === 'I'; // Only true if the <i> itself
+        console.log('Clicked 1icon?', clickedIcon ? true : false);
+        
+        // If icon clicked, prevent navigation and show submenu
+        if (clickedIcon) {
+            e.preventDefault(); // Stop following href
+            showSubMenu(menuItem);
         }
 
-        if (e.target.closest('.menu-item-has-children')) {
-            const hasChildren = e.target.closest('.menu-item-has-children');
-            showSubMenu(hasChildren);
-        }
     });
 
     menuArrow.addEventListener('click', () => {

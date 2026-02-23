@@ -458,7 +458,7 @@
     height: 100%;
     margin: 0;
     padding: 1rem 0;
-    padding-top: 50px;
+    padding-top: 150px;
     opacity: 1;
     overflow-y: auto;
     visibility: visible;
@@ -496,7 +496,15 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.09);
     background: #fffbf3;
   }
-  .menu .menu-mobile-header .menu-mobile-arrow {
+  .menu .menu-mobile-header .mobile-menu-category {
+    position: absolute;
+    display: flex;
+    top: 100px;
+  }
+  .menu .menu-mobile-header .mobile-menu-category .menu-mobile-title {
+    padding-top: 14px;
+  }
+  .menu .menu-mobile-header .mobile-menu-category .menu-mobile-arrow {
     display: none;
     font-size: 1.25rem;
     line-height: 3.125rem;
@@ -507,10 +515,10 @@
     color: var(--titleColor);
     text-align: center;
   }
-  .menu .menu-mobile-header.active .menu-mobile-arrow {
+  .menu .menu-mobile-header.active .mobile-menu-category .menu-mobile-arrow {
     display: block;
   }
-  .menu .menu-mobile-header .menu-mobile-title {
+  .menu .menu-mobile-header .mobile-menu-category .menu-mobile-title {
     font-family: inherit;
     font-size: 1rem;
     font-weight: 500;

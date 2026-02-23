@@ -100,23 +100,43 @@
                                             <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo-dark" width="250">
                                         </a>
                                     </div>
-                                    <button type="button" class="menu-mobile-arrow bg-transparent border-0"><i class="ri-arrow-left-s-line"></i></button>
-                                    <div class="menu-mobile-title"></div>
+                                    <div class="mobile-menu-category">
+                                        <button type="button" class="menu-mobile-arrow bg-transparent border-0"><i class="ri-arrow-left-s-line"></i></button>
+                                        <div class="menu-mobile-title"></div>
+                                    </div>
                                     <button type="button" class="menu-mobile-close bg-transparent border-0"><i class="ri-close-line"></i></button>
                                 </div>
                                 <ul class="menu-section p-0 mb-0 lh-1">
                                     {% for category in categories %}
                                     {% if category.menu and category.parent == None %}
-                                    <li>
-                                        <a href="{% url 'products' category.slug %}" class="position-relative">{{ category.name }} {% if category.children.all %}<i class="ri-add-line"></i>{% endif %}</a>
-                                        {% if category.children.all %}
+                                    {% with category_list=category.children.all %}
+                                    <li class="{% if category_list %}menu-item-has-children{% endif %}">
+                                        <a href="{% url 'products' category.slug %}" class="position-relative">{{ category.name }} {% if category_list %}<i class="ri-add-line"></i>{% endif %}</a>
+                                        {% if category_list %}
                                         <ul class="menu-subs menu-column-1">
                                             {% for subcategory in category.children.all %}
-                                            <li><a href="{% url 'products' subcategory.slug %}">{{ subcategory.name }}</a></li>
+                                            {% with sub_list=subcategory.children.all %}
+                                            <li class="{% if sub_list %}menu-item-has-children{% endif %}">
+                                                <a href="{% url 'products' subcategory.slug %}" class="position-relative">{{ subcategory.name }} {% if sub_list %}<i class="ri-add-line"></i>{% endif %}</a>
+                                                {% if sub_list %}
+                                                <ul class="menu-subs menu-column-1">
+                                                    {% for subsubcategory in subcategory.children.all %}
+                                                    {% with sub_sub_list=subsubcategory.children.all %}
+                                                    <li class="{% if sub_sub_list %}menu-item-has-children{% endif %}">
+                                                        <a href="{% url 'products' subsubcategory.slug %}" class="position-relative">{{ subsubcategory.name }} {% if sub_sub_list %}<i class="ri-add-line"></i>{% endif %}</a>
+                                                    </li>
+                                                    {% endwith %}
+                                                    {% endfor %}
+                                                </ul>
+                                                {% endif %}
+                                            </li>
+                                            <!-- <li><a href="{% url 'products' subcategory.slug %}">{{ subcategory.name }}</a></li> -->
+                                            {% endwith %}
                                             {% endfor %}
                                         </ul>
                                         {% endif %}
                                     </li>
+                                    {% endwith %}
                                     {% endif %}
                                     {% endfor %}
                                     <li><a href="{% url 'contact' %}">Contact</a></li>
@@ -311,6 +331,10 @@
             let i;
             let slides = document.getElementsByClassName("single-slide");
             let dots = document.getElementsByClassName("dot");
+
+            if (slides.length === 0) return; // no slides, exit
+            if (dots.length === 0) return;   // no dots, exit
+
             if (n > slides.length) {slideIndex = 1}    
             if (n < 1) {slideIndex = slides.length}
             for (i = 0; i < slides.length; i++) {
@@ -328,14 +352,35 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             const whatsappChat = document.querySelector(".whatsapp-chat");
+            const icons = document.querySelectorAll(".menu-section a i");
 
             // Show the WhatsApp button after 2 seconds
             setTimeout(() => {
-            if (whatsappChat) {
-                whatsappChat.style.visibility = "visible"; // Make the button visible
-                whatsappChat.style.transform = "translateY(0)"; // Move the button into its final position
-            }
+                if (whatsappChat) {
+                    whatsappChat.style.visibility = "visible"; // Make the button visible
+                    whatsappChat.style.transform = "translateY(0)"; // Move the button into its final position
+                }
             }, 2000);
+
+            // Select all <i> inside <a> within .menu-section
+            // icons.forEach(function(icon) {
+            //     icon.addEventListener("click", function(e) {
+            //         e.preventDefault();   // prevent the link navigation
+            //         e.stopPropagation();  // stop bubbling
+
+            //         const parentLi = this.closest("li");
+            //         if (!parentLi) return;
+
+            //         // Find the submenu inside this <li>
+            //         const currentUl = parentLi.querySelector(".menu-subs");
+            //         const mobileMenuHeader = document.querySelector(".menu-mobile-header");
+            //         if (currentUl) {
+            //             parentLi.classList.toggle("active");   // toggle active on li
+            //             currentUl.classList.toggle("active");  // toggle submenu visibility
+            //             mobileMenuHeader.classList.toggle("active");  // toggle submenu visibility
+            //         }
+            //     });
+            // });
         });
     </script>
 
