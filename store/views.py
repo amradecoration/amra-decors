@@ -14,7 +14,7 @@ def home_view(request):
         Prefetch('products', queryset=all_products, to_attr='ordered_products')
     )
     banner = Banner.objects.first()
-    testimonials = Testimonial.objects.first()
+    testimonials = Testimonial.objects.all()
 
     page_data = {
         'page_name': 'home',
