@@ -41,12 +41,12 @@
     <!--  Preloader End -->
 
     <!-- Theme Switcher Start -->
-    <div class="switch-theme-mode">
+    <!-- <div class="switch-theme-mode">
         <label id="switch" class="switch">
             <input type="checkbox" onchange="toggleTheme()" id="slider">
             <span class="slider round"></span>
         </label>
-    </div>
+    </div> -->
     <!-- Theme Switcher End -->
 
     <!-- Custom Cursor -->
@@ -61,21 +61,65 @@
                 <div class="container style-one">
                     <div class="row">
                         <div class="col-xl-4 col-lg-4 text-lg-start text-center mb-lg-0 mb-2">
-                            <p class="position-relative text-white d-inline-block text-lg-start text-center fs-15 mb-0"><img src="{% static 'img/icons/clock-pink.svg' %}" alt="Icon">Monday To Friday : 10.00 AM – 5.00 PM</p>
+                            {% if settings and settings.time %}<p class="position-relative text-white d-inline-block text-lg-start text-center fs-15 mb-0"><img src="{% static 'img/icons/clock-pink.svg' %}" alt="Icon">{{ settings.time }}</p>{% endif %}
                         </div>
                         <div class="col-xl-4 col-lg-4 text-center ps-xxl-5 mb-lg-0 mb-2">
-                            <p class="position-relative text-white d-inline-block fs-15 mb-0 ms-xxl-5"><img src="{% static 'img/icons/delivery-truck.svg' %}" alt="Icon">Free Delivery For Orders Above $100!</p>
+                            <!-- <p class="position-relative text-white d-inline-block fs-15 mb-0 ms-xxl-5"><img src="{% static 'img/icons/delivery-truck.svg' %}" alt="Icon">Free Delivery For Orders Above $100!</p> -->
                         </div>
                         <div class="col-xl-4 col-lg-4 col-12 mb-lg-0 mb-1">
+                            {% if settings and settings.facebook or settings.twitter or settings.instagram or settings.linkedin or settings.pinterest %}
                             <div class="social-share d-flex flex-wrap align-items-center justify-content-lg-end justify-content-center">
                                 <span class="fs-15 text-white">Follow Us:</span>
                                 <ul class="social-profile style-six list-unstyled mb-0">
-                                    <li><a href="https://www.facebook.com/" target="_blank" class="d-flex flex-column align-items-center justify-content-center rounded-circle"><i class="ri-facebook-fill"></i></a></li>
-                                    <li><a href="https://x.com/?lang=en" target="_blank" class="d-flex flex-column align-items-center justify-content-center rounded-circle"><i class="ri-twitter-x-line"></i></a></li>
-                                    <li><a href="https://www.instagram.com/amra_decoration/" target="_blank" class="d-flex flex-column align-items-center justify-content-center rounded-circle"><i class="ri-instagram-line"></i></a></li>
-                                    <li><a href="https://www.linkedin.com/" target="_blank" class="d-flex flex-column align-items-center justify-content-center rounded-circle"><i class="ri-linkedin-fill"></i></a></li>
+
+                                    {% if settings.facebook %}
+                                    <li>
+                                        <a href="{{ settings.facebook }}" target="_blank"
+                                        class="d-flex flex-column align-items-center justify-content-center rounded-circle">
+                                            <i class="ri-facebook-fill"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if settings.twitter %}
+                                    <li>
+                                        <a href="{{ settings.twitter }}" target="_blank"
+                                        class="d-flex flex-column align-items-center justify-content-center rounded-circle">
+                                            <i class="ri-twitter-x-line"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if settings.instagram %}
+                                    <li>
+                                        <a href="{{ settings.instagram }}" target="_blank"
+                                        class="d-flex flex-column align-items-center justify-content-center rounded-circle">
+                                            <i class="ri-instagram-line"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if settings.linkedin %}
+                                    <li>
+                                        <a href="{{ settings.linkedin }}" target="_blank"
+                                        class="d-flex flex-column align-items-center justify-content-center rounded-circle">
+                                            <i class="ri-linkedin-fill"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if settings.pinterest %}
+                                    <li>
+                                        <a href="{{ settings.pinterest }}" target="_blank"
+                                        class="d-flex flex-column align-items-center justify-content-center rounded-circle">
+                                            <i class="ri-pinterest-line"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
                                 </ul>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

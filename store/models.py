@@ -194,15 +194,38 @@ class Slide(models.Model):
     def __str__(self):
         return self.title or "Slide #{}".format(self.id)
 
-class Testimonial(models.Model):
+class Review(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     profession = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural = 'Testimonials'
+        verbose_name_plural = 'Reviews'
         ordering = ['created_at']
 
     def __str__(self):
-        return self.name or "Testimonial #{}".format(self.id)
+        return self.name or "Review #{}".format(self.id)
+
+class Settings(models.Model):
+    time = models.CharField(blank=True, null=True)
+    facebook = models.CharField(max_length=255, blank=True, null=True)
+    twitter = models.CharField(max_length=255, blank=True, null=True)
+    instagram = models.CharField(max_length=255, blank=True, null=True)
+    linkedin = models.CharField(max_length=255, blank=True, null=True)
+    pinterest = models.CharField(max_length=255, blank=True, null=True)
+    phone1 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Phone Number 1")
+    phone2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Phone Number 2")
+    phone3 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Phone Number 3")
+    email1 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email 1")
+    email2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email 2")
+    email3 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email 3")
+    address = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Settings'
+        ordering = ['created_at']
+
+    def __str__(self):
+        return "Review #{}".format(self.id)

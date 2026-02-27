@@ -192,9 +192,26 @@ class SlideAdmin(admin.ModelAdmin):
             obj.banner_id = 1
         super().save_model(request, obj, form, change)
 
-class TestimonialAdmin(admin.ModelAdmin):
+class ReviewAdmin(admin.ModelAdmin):
     list_display = ('name', 'profession', 'created_at')
     search_fields = ('name',)
+
+# -----------------------------
+# Settings Admin
+# -----------------------------
+class SettingsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'time', 'facebook', 'twitter', 'instagram', 'linkedin', 'pinterest', 'phone1', 'phone2', 'phone3', 'email1', 'email2', 'email3')
+
+    fieldsets = (
+        (None, {'fields': ('time',)}),
+        ('Social Media', {'fields': ('facebook', 'twitter', 'instagram', 'linkedin', 'pinterest')}),
+        ('Address', {'fields': ('address',)}),
+        ('Contact', {'fields': ('phone1', 'phone2', 'phone3')}),
+        ('Email', {'fields': ('email1', 'email2', 'email3')}),
+    )
+
+    def has_add_permission(self, request):
+        return False
 
 # -----------------------------
 # Register Admins
@@ -206,4 +223,5 @@ admin.site.register(Categories, CategoriesAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Products, ProductsAdmin)
 admin.site.register(Slide, SlideAdmin)
-admin.site.register(Testimonial, TestimonialAdmin)
+admin.site.register(Review, ReviewAdmin)
+admin.site.register(Settings, SettingsAdmin)

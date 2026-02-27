@@ -27,23 +27,29 @@
                         <div class="contact-icon d-flex flex-column align-items-center justify-content-center rounded-circle bg_secondary"><img src="{% static 'img/icons/phone-white-large.svg' %}" alt="Icon"></div>
                         <div class="contact-info">
                             <h3 class="fs-22 fw-normal">Phone</h3>
-                            <a href="tel:+919840089135" class="text-para d-block">+91 98400 89135</a>
-                            <a href="tel:+919551047462" class="text-para d-block">+91 95510 47462</a>
+                            {% if settings %}
+                            {% if settings.phone1 %}<a href="tel:{{ settings.phone1|cut:' ' }}" class="text-para d-block">{{ settings.phone1 }}</a>{% endif %}
+                            {% if settings.phone2 %}<a href="tel:{{ settings.phone2|cut:' ' }}" class="text-para d-block">{{ settings.phone2 }}</a>{% endif %}
+                            {% if settings.phone3 %}<a href="tel:{{ settings.phone3|cut:' ' }}" class="text-para d-block">{{ settings.phone3 }}</a>{% endif %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="contact-card style-one d-flex flex-wrap align-items-center mb-30">
                         <div class="contact-icon d-flex flex-column align-items-center justify-content-center rounded-circle bg_secondary"><img src="{% static 'img/icons/mail-large-white.svg' %}" alt="Icon"></div>
                         <div class="contact-info">
                             <h3 class="fs-22 fw-normal">Email Address</h3>
-                            <a href="mailto:contact@amradecoration.com" class="text-para d-block">contact@amradecoration.com</a>
-                            <a href="mailto:amradecoration@gmail.com" class="text-para d-block">amradecoration@gmail.com</a>
+                            {% if settings %}
+                            {% if settings.email1 %}<a href="mailto:{{settings.email1}}" class="text-para d-block">{{settings.email1}}</a>{% endif %}
+                            {% if settings.email2 %}<a href="mailto:{{settings.email2}}" class="text-para d-block">{{settings.email2}}</a>{% endif %}
+                            {% if settings.email3 %}<a href="mailto:{{settings.email3}}" class="text-para d-block">{{settings.email3}}</a>{% endif %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="contact-card style-one d-flex flex-wrap align-items-center mb-30">
                         <div class="contact-icon d-flex flex-column align-items-center justify-content-center rounded-circle bg_secondary"><img src="{% static 'img/icons/pin-large-white.svg' %}" alt="Icon"></div>
                         <div class="contact-info">
                             <h3 class="fs-22 fw-normal">Our Location</h3>
-                            <p class="mb-0">1st floor, 37, Bunder Street, George Town, Chennai, Tamil Nadu 600001</p>
+                            {% if settings and settings.address %}<p class="mb-0">{{ settings.address }}</p>{% endif %}
                         </div>
                     </div>
                 </div>

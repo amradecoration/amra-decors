@@ -207,11 +207,11 @@
                         <div class="col-xl-7 col-lg-7">
                             <div class="testimonial-slider-three swiper position-relative">
                                 <div class="swiper-wrapper">
-                                    {% for testimonial in testimonials %}
+                                    {% for review in reviews %}
                                     <div class="swiper-slide">
                                         <div class="testimonial-card style-three bg-white d-flex flex-wrap round-20">
                                             <div class="client-quote-wrap">
-                                                <p class="fs-xxl-18">"{{ testimonial.content }}”</p>
+                                                <p class="fs-xxl-18">"{{ review.content }}”</p>
                                                 <ul class="rating list-unstyled lh-1">
                                                     <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
                                                     <li><img src="{% static 'img/icons/star-1.svg' %}" alt="Icon"></li>
@@ -221,8 +221,8 @@
                                                 </ul>
                                                 <div class="client-info-wrap d-flex flex-wrap align-items-center justify-content-between pe-xxl-4">
                                                     <div class="client-info">
-                                                        <h5 class="fs-22 mb-6">{{ testimonial.name }}</h5>
-                                                        <span>{{ testimonial.profession }}</span>
+                                                        <h5 class="fs-22 mb-6">{{ review.name }}</h5>
+                                                        <span>{{ review.profession }}</span>
                                                     </div>
                                                     <img src="{% static 'img/icons/quote-line-2.svg' %}" alt="Icon">
                                                 </div>
