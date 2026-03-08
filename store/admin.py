@@ -204,7 +204,7 @@ class SettingsAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {'fields': ('time',)}),
-        ('Social Media', {'fields': ('facebook', 'twitter', 'instagram', 'linkedin', 'pinterest')}),
+        ('Social Media', {'fields': ('facebook', 'twitter', 'instagram', 'linkedin', 'pinterest', 'youtube')}),
         ('Address', {'fields': ('address',)}),
         ('Contact', {'fields': ('phone1', 'phone2', 'phone3')}),
         ('Email', {'fields': ('email1', 'email2', 'email3')}),

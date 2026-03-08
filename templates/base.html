@@ -117,6 +117,15 @@
                                     </li>
                                     {% endif %}
 
+                                    {% if settings.youtube %}
+                                    <li>
+                                        <a href="{{ settings.youtube }}" target="_blank"
+                                        class="d-flex flex-column align-items-center justify-content-center rounded-circle">
+                                            <i class="ri-youtube-line"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
                                 </ul>
                             </div>
                             {% endif %}

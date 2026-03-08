@@ -214,6 +214,7 @@ class Settings(models.Model):
     instagram = models.CharField(max_length=255, blank=True, null=True)
     linkedin = models.CharField(max_length=255, blank=True, null=True)
     pinterest = models.CharField(max_length=255, blank=True, null=True)
+    youtube = models.CharField(max_length=255, blank=True, null=True)
     phone1 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Phone Number 1")
     phone2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Phone Number 2")
     phone3 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Phone Number 3")
