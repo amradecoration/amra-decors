@@ -200,7 +200,7 @@ class ReviewAdmin(admin.ModelAdmin):
 # Settings Admin
 # -----------------------------
 class SettingsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'time', 'facebook', 'twitter', 'instagram', 'linkedin', 'pinterest', 'phone1', 'phone2', 'phone3', 'email1', 'email2', 'email3')
+    list_display = ('id', 'time', 'facebook', 'twitter', 'instagram', 'linkedin', 'pinterest', 'youtube', 'phone1', 'phone2', 'phone3', 'email1', 'email2', 'email3')
 
     fieldsets = (
         (None, {'fields': ('time',)}),

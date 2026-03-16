@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  amra-app:
+    container_name: amra
+    restart: always
+    image: amra
+    # image: $IMAGE_TAG
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - media:/usr/src/app/media
+
+volumes:
+  media: {}
