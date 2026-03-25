@@ -90,19 +90,40 @@ WSGI_APPLICATION = 'api.wsgi.application'
 #     }
 # }
 
-DATABASE_URL = str(os.environ.get('DATABASE_URL'))
+POSTGRES_NAME = os.environ.get("POSTGRES_NAME")
+POSTGRES_USER = os.environ.get("POSTGRES_USER")
+POSTGRES_PASS = os.environ.get("POSTGRES_PASSWORD")
+POSTGRES_HOST = os.environ.get("POSTGRES_HOST")
+POSTGRES_PORT = os.environ.get("POSTGRES_PORT")
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if not DATABASE_URL:
-    raise Exception('DATABASE_URL not set')
+POSTGRES_READY = all([POSTGRES_NAME, POSTGRES_USER, POSTGRES_PASS, POSTGRES_HOST, POSTGRES_PORT])
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL,
-        # conn_max_age=0,
-        conn_max_age=60,  # keep connections alive 60 seconds
-        ssl_require=True
-    )
-}
+if POSTGRES_READY:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": POSTGRES_NAME,
+            "USER": POSTGRES_USER,
+            "PASSWORD": POSTGRES_PASS,
+            "HOST": POSTGRES_HOST,
+            "PORT": POSTGRES_PORT,
+            "CONN_MAX_AGE": 60,
+            "OPTIONS": {
+                "sslmode": "require" if os.environ.get("DB_SSL", "false").lower() == "true" else "disable"
+            },
+        }
+    }
+else:
+    if not DATABASE_URL:
+        raise Exception("DATABASE_URL not set")
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=60,
+            ssl_require=True
+        )
+    }
 
 
 # Password validation
