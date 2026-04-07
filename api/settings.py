@@ -27,8 +27,8 @@ SECRET_KEY = str(os.environ.get('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str(os.environ.get('DEBUG')) == "1" # 1 = True
 
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['*']
+ALLOWED_HOSTS = ['amradecorations.com', 'www.amradecorations.com', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://amradecorations.com', 'https://www.amradecorations.com', 'https://127.0.0.1:8000']
 
 # Application definition
 
