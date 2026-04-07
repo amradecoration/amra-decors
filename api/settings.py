@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 POSTGRES_NAME = os.environ.get("POSTGRES_NAME")
 POSTGRES_USER = os.environ.get("POSTGRES_USER")
-POSTGRES_PASS = os.environ.get("POSTGRES_PASSWORD")
+POSTGRES_PASS = os.environ.get("POSTGRES_PASS")
 POSTGRES_HOST = os.environ.get("POSTGRES_HOST")
 POSTGRES_PORT = os.environ.get("POSTGRES_PORT", "5432")
 DATABASE_URL = os.environ.get("DATABASE_URL")
