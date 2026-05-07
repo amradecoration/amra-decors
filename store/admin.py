@@ -83,6 +83,22 @@ class ProfileAdmin(admin.ModelAdmin):
     )
 
 # -----------------------------
+# Recursively attach children
+# -----------------------------
+def attach_children(category):
+    """
+    Attach prefetched children recursively
+    to avoid recursion stopping at child level.
+    """
+
+    children = list(category.children.all())
+
+    category.children_prefetch = children
+
+    for child in children:
+        attach_children(child)
+
+# -----------------------------
 # Helper: Category Choices (Lazy)
 # -----------------------------
 def get_category_choices(categories, level=0):
@@ -118,7 +134,7 @@ class ProductAdminForm(forms.ModelForm):
         # Prefetch top-level categories with children
         top_categories = Categories.objects.filter(parent__isnull=True).prefetch_related('children')
         for cat in top_categories:
-            cat.children_prefetch = list(cat.children.all())
+            attach_children(cat)
 
         # Set queryset and choices at runtime
         self.fields['categories'].queryset = Categories.objects.all()
