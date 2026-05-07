@@ -182,6 +182,7 @@
   background: var(--whiteColor);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease-in-out;
+  max-height: calc(90vh - 120px);
 }
 .menu > ul > li .menu-subs li a {
   padding: 13px 20px;
@@ -460,11 +461,12 @@
     padding: 1rem 0;
     padding-top: 150px;
     opacity: 1;
-    overflow-y: auto;
+    overflow-y: auto !important;
     visibility: visible;
     transform: translateX(100%);
     box-shadow: none;
     transition: var(--transition);
+    max-height: initial;
   }
   .menu > ul > li .menu-subs > ul > li a {
     display: block;

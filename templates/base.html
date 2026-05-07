@@ -162,7 +162,7 @@
                                 <ul class="menu-section p-0 mb-0 lh-1">
                                     {% for category in categories %}
                                         {% if category.menu and category.parent == None %}
-                                            {% include "categories_menu.html" with item=category %}
+                                            {% include "categories_menu.html" with item=category level=1 %}
                                         {% endif %}
                                     {% endfor %}
                                     <li><a href="{% url 'contact' %}">Contact</a></li>

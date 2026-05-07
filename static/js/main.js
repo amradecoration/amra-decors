@@ -1,6 +1,53 @@
 (function () {
   "use strict";
 
+  document.querySelectorAll('.menu-item').forEach(li => {
+    li.addEventListener('mouseenter', () => {
+      const link = li.querySelector(':scope > a');
+      const menuText = link ? link.innerText.trim() : '[No text]';
+
+      console.log("Hovering on menu:", menuText);
+      const hasChildren = li.classList.contains('menu-item-has-children');
+      const submenu = li.querySelector(':scope > .menu-subs');
+      console.log("Has children:", hasChildren);
+
+      if (hasChildren && submenu) {
+        // parent → no scroll restriction
+        submenu.style.removeProperty('overflow-y');
+        submenu.style.removeProperty('overflow-x');
+      } else if (submenu) {
+        // leaf with submenu (rare, maybe edge case)
+        submenu.style.overflowY = 'auto';
+        submenu.style.overflowX = 'hidden';
+        submenu.addEventListener('wheel', stopScroll, { passive: false });
+      } else {
+        // leaf → remove overflow from nearest parent submenu
+        const parentSubmenu = li.closest('.menu-subs.menu-level-1');
+        if (parentSubmenu) {
+          parentSubmenu.style.overflowY = 'auto';
+          parentSubmenu.style.overflowX = 'hidden';
+          parentSubmenu.addEventListener('wheel', stopScroll, { passive: false });
+        } else {
+          console.log("→ Leaf: no parent submenu found");
+        }
+      }
+    });
+
+    li.addEventListener('mouseleave', () => {
+      const submenu = li.querySelector(':scope > .menu-subs');
+      if (submenu) {
+        submenu.style.overflowY = 'auto';
+        submenu.style.overflowX = 'hidden';
+        submenu.addEventListener('wheel', stopScroll, { passive: false });
+      }
+    });
+  });
+
+  // reusable function
+  function stopScroll(e) {
+    e.stopPropagation();
+  }
+
   window.onload = function () {
     //Header Sticky
     const getHeaderId = document.querySelector(".navbar-area");
@@ -936,3 +983,9 @@ try {
     }
   })();
 } catch (err) {}
+
+// document.querySelectorAll('.menu-subs').forEach(el => {
+//   el.addEventListener('wheel', (e) => {
+//     e.stopPropagation();
+//   }, { passive: false });
+// });

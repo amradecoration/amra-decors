@@ -1,4 +1,4 @@
-<li class="{% if item.children.exists %}menu-item-has-children{% endif %}">
+<li class="menu-item{% if item.children.exists %} menu-item-has-children{% endif %}">
     <a href="{% url 'products' item.slug %}" class="position-relative">
         {{ item.name }}
         {% if item.children.exists %}
@@ -6,9 +6,9 @@
         {% endif %}
     </a>
     {% if item.children.exists %}
-        <ul class="menu-subs menu-column-1">
+        <ul class="menu-subs menu-level-{{ level }} menu-column-1">
             {% for child in item.children.all %}
-                {% include "categories_menu.html" with item=child %}
+                {% include "categories_menu.html" with item=child level=level|add:1 %}
             {% endfor %}
         </ul>
     {% endif %}
