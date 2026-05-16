@@ -1,5 +1,8 @@
 import os
 import uuid
+import random
+import string
+
 from django.db import models
 from datetime import timedelta
 from django.utils import timezone
@@ -14,6 +17,18 @@ GENDER = [
     ('F', 'Female'),
     ('O', 'Other'),
 ]
+    
+def image_upload_path(folder_name):
+    def wrapper(instance, filename):
+        ext = os.path.splitext(filename)[1]  # includes dot (.jpg)
+        rand = ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
+        filename = f"{slugify(instance.name)}-{rand}{ext}"
+        
+        if folder_name:
+            return f"{folder_name}/{filename}"    
+        return filename
+    
+    return wrapper
 
 class Categories(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -91,7 +106,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     role = models.ForeignKey(Roles, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
-    profile_image = models.FileField(upload_to='profile_images/', blank=True, null=True)
+    profile_image = models.FileField(upload_to=image_upload_path('profile_images'), blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=10, choices=GENDER, blank=True, null=True)
     address_line1 = models.CharField(max_length=255, blank=True, null=True)
@@ -120,7 +135,7 @@ class Products(models.Model):
     description = RichTextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    image = models.FileField(upload_to='products/', blank=True, null=True)
+    image = models.FileField(upload_to=image_upload_path('products'), blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
