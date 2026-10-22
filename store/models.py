@@ -1,6 +1,7 @@
 import os
 import uuid
 import random
+import mimetypes
 import string
 
 from django.db import models
@@ -178,7 +179,9 @@ class Slide(models.Model):
         # Generate a unique filename for uploaded files
         ext = os.path.splitext(filename)[1]
         unique_name = f"{uuid.uuid4().hex}{ext}"
-        return unique_name
+        mime_type = mimetypes.guess_type(filename)[0] or ''
+        folder_name = 'videos' if mime_type.startswith('video/') else 'slides'
+        return f"{folder_name}/{unique_name}"
     
     def validate_image_size(file):
         max_size_mb = 1
