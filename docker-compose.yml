@@ -15,6 +15,29 @@ services:
       - media:/usr/src/app/media
       - static:/usr/src/app/static
 
+  # Daily backup of the media (uploads) volume to ./backups on the host.
+  # Archives older than BACKUP_RETENTION_DAYS are removed.
+  media-backup:
+    container_name: amra-media-backup
+    restart: always
+    image: alpine:3.20
+    environment:
+      - BACKUP_INTERVAL_SECONDS=86400
+      - BACKUP_RETENTION_DAYS=14
+    volumes:
+      - media:/data/media:ro
+      - ./backups:/backups
+    command:
+      - sh
+      - -c
+      - |
+        while true; do
+          ts=$$(date +%Y%m%d-%H%M%S)
+          tar -czf /backups/media-$$ts.tar.gz -C /data media && echo "[backup] media-$$ts.tar.gz"
+          find /backups -name 'media-*.tar.gz' -mtime +$$BACKUP_RETENTION_DAYS -delete
+          sleep $$BACKUP_INTERVAL_SECONDS
+        done
+
 volumes:
   media: {}
   static: {}
