@@ -14,8 +14,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
+from django.views.static import serve
 from django.contrib import admin
 from django.conf.urls import handler404
 from django.conf.urls.static import static
@@ -33,6 +34,11 @@ urlpatterns = [
     path('product-detail/', product_detail_view, name='product-detail'),
     path('product-detail/<int:id>', product_detail_view, name='product-detail'),
     path('contact/', contact_view, name='contact'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Serve uploaded media from the local media/ directory (no separate web server in front of gunicorn)
+urlpatterns += [
+    re_path(r'^%s(?P<path>.*)$' % settings.MEDIA_URL.lstrip('/'), serve, {'document_root': settings.MEDIA_ROOT}),
+]
 
 handler404 = 'store.views.custom_404_view'

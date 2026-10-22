@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 
     'store',
 
-    'storages',
     'ckeditor',
     'corsheaders',
 ]
@@ -180,19 +179,7 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 
-DEFAULT_FILE_STORAGE = 'api.utils.SupabaseStorage'
-
-AWS_ACCESS_KEY_ID = os.environ.get('SUPABASE_S3_STORAGE_KEY')
-AWS_SECRET_ACCESS_KEY = os.environ.get('SUPABASE_S3_STORAGE_SECRET')
-
-AWS_STORAGE_BUCKET_NAME = os.environ.get('SUPABASE_S3_STORAGE_BUCKET')
-AWS_S3_REGION_NAME = os.environ.get('SUPABASE_S3_STORAGE_REGION')
-
-SUPABASE_PROJECT_ID = os.environ.get('SUPABASE_PROJECT_ID')
-
-# Supabase S3 endpoint example
-AWS_S3_ENDPOINT_URL = os.environ.get('SUPABASE_S3_STORAGE_URL')
-AWS_S3_ADDRESSING_STYLE = 'path'  # equivalent to forcePathStyle: true
-
-AWS_QUERYSTRING_AUTH = False  # optional (public files)
-AWS_DEFAULT_ACL = None
+# User uploads are stored in the project's media/ directory
+# (mounted as the `media` Docker volume in production)
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
