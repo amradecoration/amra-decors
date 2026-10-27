@@ -1,9 +1,12 @@
 from django.db.models import Prefetch
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 
 
 # Create your views here.
 from .models import *
+
+PRODUCTS_PER_PAGE = 12
 
 def get_active_categories():
     return Categories.objects.filter(active=True)
@@ -66,14 +69,24 @@ def products_view(request, slug=''):
     else:
         products = Products.objects.filter(active=True).order_by('-id')
         page_title = 'Products | Amra Decorations'
-    
+
+    paginator = Paginator(products, PRODUCTS_PER_PAGE)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    # Infinite scroll requests only need the next batch of product cards
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        response = render(request, 'components/product_list.html', {'products': page_obj})
+        response['X-Next-Page'] = page_obj.next_page_number() if page_obj.has_next() else ''
+        return response
+
     categories = get_active_categories()
     settings = Settings.objects.first()
 
     page_data = {
         'page_name': 'products',
         'page_title': page_title,
-        'products': products,
+        'products': page_obj,
+        'page_obj': page_obj,
         'categories': categories,
         'settings': settings,
     }

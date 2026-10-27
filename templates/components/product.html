@@ -2,7 +2,7 @@
 <div class="product-card style-four position-relative text-center bg-white img-hover-zoom round-20 mb-30" onclick="window.location.href='{% url 'product-detail' product.id %}';">
     <div class="product-img round-15">
         {% if product.image %}
-        <img src="{{ product.image.url }}" alt="Image" class="round-15">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="round-15" loading="lazy">
         {% endif %}
         {% if product.is_new %}
         <div class="add-to-wishlist rounded-circle position-absolute border-0">New</div>

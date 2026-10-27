@@ -25,17 +25,19 @@
             <div class="container style-one ptb-120">
                 <div class="row">
                     <div class="col-xl-9 order-xl-2 order-1">
-                        <div class="row">
-                        	{% for product in products %}
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-6">
-                            	{% include 'components/product.html' with product=product %}
-                            </div>
-                            {% empty %}
+                        <div class="row" id="product-list">
+                            {% include 'components/product_list.html' with products=products %}
+                            {% if not products %}
                             <div class="col-12 text-center">
                                 <p>No products available at the moment.</p>
                             </div>
-                        	{% endfor %}
+                            {% endif %}
                         </div>
+                        {% if page_obj.has_next %}
+                        <div id="product-list-loader" class="text-center mt-20" data-next-page="{{ page_obj.next_page_number }}">
+                            <a href="?page={{ page_obj.next_page_number }}" class="text-title link-hover-primary">Load more</a>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="col-xl-3 order-xl-1 order-2">
                         <aside class="sidebar mt-lg-50">
@@ -65,4 +67,62 @@
                 </div>
             </div>
             <!-- Shop End -->
+
+            <script>
+                // Infinite scroll: fetch the next page of products when the loader comes into view
+                (function () {
+                    var loader = document.getElementById('product-list-loader');
+                    var list = document.getElementById('product-list');
+                    if (!loader || !list || !('IntersectionObserver' in window)) return;
+
+                    var link = loader.querySelector('a');
+                    var loading = false;
+
+                    function loadNextPage() {
+                        var nextPage = loader.dataset.nextPage;
+                        if (loading || !nextPage) return;
+                        loading = true;
+                        link.textContent = 'Loading...';
+
+                        var url = new URL(window.location.href);
+                        url.searchParams.set('page', nextPage);
+
+                        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                            .then(function (response) {
+                                if (!response.ok) throw new Error(response.status);
+                                loader.dataset.nextPage = response.headers.get('X-Next-Page') || '';
+                                return response.text();
+                            })
+                            .then(function (html) {
+                                list.insertAdjacentHTML('beforeend', html);
+                                if (!loader.dataset.nextPage) {
+                                    observer.disconnect();
+                                    loader.remove();
+                                    return;
+                                }
+                                link.href = '?page=' + loader.dataset.nextPage;
+                                link.textContent = 'Load more';
+                                // Re-check visibility in case the loader is still on screen
+                                observer.unobserve(loader);
+                                observer.observe(loader);
+                            })
+                            .catch(function () {
+                                link.textContent = 'Load more';
+                            })
+                            .finally(function () {
+                                loading = false;
+                            });
+                    }
+
+                    var observer = new IntersectionObserver(function (entries) {
+                        if (entries[0].isIntersecting) loadNextPage();
+                    }, { rootMargin: '400px 0px' });
+                    observer.observe(loader);
+
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        loadNextPage();
+                    });
+                })();
+            </script>
 {% endblock %}
