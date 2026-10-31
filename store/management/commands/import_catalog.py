@@ -124,7 +124,7 @@ class Command(BaseCommand):
             defaults = {
                 'code': code,
                 'name': name,
-                'description': (row.get('description') or '').strip() or None,
+                'description': (row.get('description') or '').strip(),
                 'price': self.parse_decimal(row.get('price'), line, 'price', required=True),
                 'discount_price': self.parse_decimal(row.get('discount_price'), line, 'discount_price'),
                 'order': int((row.get('order') or '0').strip() or 0),
