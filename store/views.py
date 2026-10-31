@@ -11,6 +11,20 @@ PRODUCTS_PER_PAGE = 12
 def get_active_categories():
     return Categories.objects.filter(active=True)
 
+def get_category_tree_ids(category):
+    # The category's id plus the ids of all its active subcategories, at any depth
+    children_by_parent = {}
+    for category_id, parent_id in Categories.objects.filter(active=True).values_list('id', 'parent_id'):
+        children_by_parent.setdefault(parent_id, []).append(category_id)
+
+    category_ids = []
+    pending = [category.id]
+    while pending:
+        current_id = pending.pop()
+        category_ids.append(current_id)
+        pending.extend(children_by_parent.get(current_id, []))
+    return category_ids
+
 def home_view(request):
     all_products = Products.objects.filter(active=True).order_by('-id')
     categories = Categories.objects.filter(active=True).prefetch_related(
@@ -62,7 +76,8 @@ def products_view(request, slug=''):
     if slug:
         category = Categories.objects.filter(slug=slug).first()
         if category:
-            products = Products.objects.filter(categories__in=[category], active=True).order_by('-id')
+            category_ids = get_category_tree_ids(category)
+            products = Products.objects.filter(categories__in=category_ids, active=True).distinct().order_by('-id')
             page_title = f'{category.name} | Amra Decorations'
         else:
             return redirect('products')
