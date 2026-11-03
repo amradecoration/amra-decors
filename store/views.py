@@ -30,6 +30,10 @@ def home_view(request):
     categories = Categories.objects.filter(active=True).prefetch_related(
         Prefetch('products', queryset=all_products, to_attr='ordered_products')
     )
+    # Products picked in the admin; falls back to the latest products until any are picked
+    new_arrivals = all_products.filter(new_arrival=True)
+    if not new_arrivals.exists():
+        new_arrivals = all_products[:10]
     banner = Banner.objects.first()
     reviews = Review.objects.all()
     settings = Settings.objects.first()
@@ -39,6 +43,7 @@ def home_view(request):
         'page_title': 'Amra Decoration | Transforming Ideas into Timeless Decor',
         'categories': categories,
         'all_products': all_products,
+        'new_arrivals': new_arrivals,
         'banner': banner,
         'reviews': reviews,
         'settings': settings,

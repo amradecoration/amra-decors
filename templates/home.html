@@ -83,12 +83,12 @@
                     transform: rotate(180deg);
                     z-index: -1;">
                 </div>
-                {% if all_products %}
+                {% if new_arrivals %}
                 <div class="container style-one pb-120">
                     <h2 class="section-title style-one fw-normal text-title text-center mb-45">New Arrivals</h2>
                     <div class="product-slider-one swiper">
                         <div class="swiper-wrapper">
-                            {% for product in all_products|slice:":10" %}
+                            {% for product in new_arrivals %}
                             <div class="swiper-slide">
                             {% include 'components/product.html' with product=product %}
                             </div>

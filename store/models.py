@@ -139,6 +139,7 @@ class Products(models.Model):
     image = models.FileField(upload_to=image_upload_path('products'), blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=True)
+    new_arrival = models.BooleanField(default=False, verbose_name='Show in New Arrivals')
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

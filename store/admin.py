@@ -145,11 +145,23 @@ class ProductAdminForm(forms.ModelForm):
 # -----------------------------
 class ProductsAdmin(admin.ModelAdmin):
     form = ProductAdminForm
-    list_display = ('code', 'name', 'get_categories', 'price', 'discount_price', 'active', 'created_at')
-    list_filter = ('active', 'categories')
+    list_display = ('code', 'name', 'get_categories', 'price', 'discount_price', 'new_arrival', 'active', 'created_at')
+    list_editable = ('new_arrival',)
+    list_filter = ('new_arrival', 'active', 'categories')
     search_fields = ('code', 'name', 'description')
     prepopulated_fields = {'slug': ('name',)}
     readonly_fields = ('created_at', 'updated_at')
+    actions = ['add_to_new_arrivals', 'remove_from_new_arrivals']
+
+    @admin.action(description='Add selected products to New Arrivals')
+    def add_to_new_arrivals(self, request, queryset):
+        updated = queryset.update(new_arrival=True)
+        self.message_user(request, f'{updated} product(s) added to New Arrivals.')
+
+    @admin.action(description='Remove selected products from New Arrivals')
+    def remove_from_new_arrivals(self, request, queryset):
+        updated = queryset.update(new_arrival=False)
+        self.message_user(request, f'{updated} product(s) removed from New Arrivals.')
 
     def get_queryset(self, request):
         # Prefetch categories to avoid N+1
