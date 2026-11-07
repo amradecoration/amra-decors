@@ -25,6 +25,8 @@
     
     <title>{% block title %}{{ page_title }}{% endblock %}</title>
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+    {% if settings.header_scripts %}{{ settings.header_scripts|safe }}{% endif %}
 </head>
 <body>
 
@@ -410,5 +412,6 @@
         });
     </script>
 
+    {% if settings.footer_scripts %}{{ settings.footer_scripts|safe }}{% endif %}
 </body>
 </html>

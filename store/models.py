@@ -241,6 +241,8 @@ class Settings(models.Model):
     email2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email 2")
     email3 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email 3")
     address = models.TextField(blank=True, null=True)
+    header_scripts = models.TextField(blank=True, null=True, help_text="Added before &lt;/head&gt; on every page. Paste full tags, e.g. &lt;script&gt;...&lt;/script&gt; or &lt;meta ...&gt;.")
+    footer_scripts = models.TextField(blank=True, null=True, help_text="Added before &lt;/body&gt; on every page. Paste full tags, e.g. &lt;script&gt;...&lt;/script&gt;.")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

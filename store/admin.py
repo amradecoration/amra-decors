@@ -236,6 +236,7 @@ class SettingsAdmin(admin.ModelAdmin):
         ('Address', {'fields': ('address',)}),
         ('Contact', {'fields': ('phone1', 'phone2', 'phone3')}),
         ('Email', {'fields': ('email1', 'email2', 'email3')}),
+        ('Scripts', {'fields': ('header_scripts', 'footer_scripts')}),
     )
 
     def has_add_permission(self, request):
